@@ -150,6 +150,7 @@ public class CRUD extends javax.swing.JFrame {
             int n=st.executeUpdate(SQL);
             if(n>=0){
                 JOptionPane.showMessageDialog(null, "registro eliminado");
+                listar();
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error al eliminar "+e.getMessage());
@@ -311,9 +312,7 @@ public class CRUD extends javax.swing.JFrame {
                                     .addComponent(jtxtmarca)
                                     .addComponent(jtxtdescripcion)
                                     .addComponent(jcbxcategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jtxtstock, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jtxtstock, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jtxtvencimiento)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -385,7 +384,7 @@ public class CRUD extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
                             .addComponent(jButton4))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 31, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
 
