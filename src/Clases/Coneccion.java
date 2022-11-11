@@ -16,6 +16,7 @@ public class Coneccion {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Error de conecccion : "+e.getMessage());
         }
+        //hola   
         return con;
     }
     
