@@ -1,5 +1,10 @@
 
 import Clases.Coneccion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -14,25 +19,53 @@ public class login extends javax.swing.JFrame {
 
     
     Coneccion cone = new Coneccion();
+    Connection con= cone.conectar();
     
     public login() {
         initComponents();
     }
     
-    void validarUsuario(){
-        int res=0;
-                      
-        String SQL= "select * from cuentas where usuario = '"+txtUser.getText()+"' and contrasenia = '"+txtPAss.getPassword()+"'  ";
+    public void validarUsuario(){
+        String usuario = txtUser.getText();
+        String paswrd = txtPAss.getText();
         
-        try{
-           
-        }catch(Exception e){
+        if (usuario.isEmpty() || paswrd.isEmpty()){
             
+            JOptionPane.showMessageDialog(null, "algun dato vacio");
+        }
+        else{
+            int res=0;
+
+            String SQL= "select * from cuentas where usuario = '"+usuario+"' and contrasenia = '"+paswrd+"'  ";
+            //String SQL= "insert into cuentas (usuario,contrasenia) values (?,?)";
+
+            try{
+                
+                Statement st = con.createStatement();
+                ResultSet rs=st.executeQuery(SQL);
+                
+                if(rs.next()){
+                    res =1;
+                    
+                    if(res==1){
+                        //abresistema
+                        CRUD form = new CRUD();
+                        form.setVisible(true);
+                        this.dispose();
+                    }
+                }
+                else{
+                        JOptionPane.showMessageDialog(null, "error de acceso");
+                    }
+
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage());
+
+            }
         }
         
     }
        
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -108,7 +141,7 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        validarUsuario();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
