@@ -12,11 +12,11 @@ public class Coneccion {
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/ec3_modeloycalidad", "root", "12345678");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/ec3_modeloycalidad", "root", "root");
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Error de conecccion : "+e.getMessage());
         }
-        //hola   
+        
         return con;
     }
     
