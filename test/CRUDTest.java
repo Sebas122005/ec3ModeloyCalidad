@@ -5,6 +5,7 @@
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,6 +39,7 @@ public class CRUDTest {
     /**
      * Test of setear method, of class CRUD.
      */
+    
     @Test
     public void testSetear() {
         System.out.println("setear");
@@ -54,6 +56,7 @@ public class CRUDTest {
         System.out.println("guardardatos");
         CRUD instance = new CRUD();
         instance.guardardatos();
+        
        
     }
 
@@ -83,10 +86,12 @@ public class CRUDTest {
      * Test of eliminar method, of class CRUD.
      */
     @Test
+   // @Rollback(false)
     public void testEliminar() {
-        System.out.println("eliminar");
+        //System.out.println("eliminar");
         CRUD instance = new CRUD();
-        instance.eliminar();
+        String valor="";
+        instance.filtrardatos(valor);
       
     }
 
@@ -96,9 +101,10 @@ public class CRUDTest {
     @Test
     public void testFiltrardatos() {
         System.out.println("filtrardatos");
-        String valor = "";
+        String valor = "2";
         CRUD instance = new CRUD();
         instance.filtrardatos(valor);
+        Assert.assertNull(instance);
       
     }
 
@@ -112,5 +118,7 @@ public class CRUDTest {
         CRUD.main(args);
       
     }
+
+  
     
 }
