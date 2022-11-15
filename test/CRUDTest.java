@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 public class CRUDTest {
     
     public CRUDTest() {
+        
     }
     
     @BeforeClass
@@ -44,42 +45,74 @@ public class CRUDTest {
     public void testSetear() {
         System.out.println("setear");
         CRUD instance = new CRUD();
-        instance.setear();
-       
+        boolean res= instance.setear();
+        assertTrue(res);
     }
 
-    /**
-     * Test of guardardatos method, of class CRUD.
-     */
+    
     @Test
     public void testGuardardatos() {
         System.out.println("guardardatos");
         CRUD instance = new CRUD();
-        instance.guardardatos();
+        String marca="ideal";
+        Integer indexCategoria=1;
+        String descripcion="leche de marca que no conozco pero existe";
+        Integer stock=17;
+        Integer estado =1;
+        String fecha="2022-11-12";
         
-       
+        assertNotEquals("", marca);
+        assertNotEquals("", indexCategoria);
+        assertNotEquals("", descripcion);
+        assertNotEquals("", stock);
+        assertNotEquals("", estado);
+        assertNotEquals("", fecha);
+        assertTrue(stock>=0);
+        assertTrue(descripcion.length()>10);
+        
+        int res =instance.guardardatos(marca,indexCategoria,descripcion,stock,estado,fecha);
+        
+        assertEquals("Producto registrado exitosamente", 1, res);
+        
     }
 
-    /**
-     * Test of listar method, of class CRUD.
-     */
+    
+    
     @Test
     public void testListar() {
         System.out.println("listar");
         CRUD instance = new CRUD();
-        instance.listar();
-        
+        int res= instance.listar();
+        assertEquals("Producto listados exitosamente", 1, res);
+        assertTrue(res==1);
     }
 
-    /**
-     * Test of actualizardatos method, of class CRUD.
-     */
+    
     @Test
     public void testActualizardatos() {
         System.out.println("actualizardatos");
         CRUD instance = new CRUD();
-        instance.actualizardatos();
-       
+        String marca="benoti";
+        Integer indexCategoria=3;
+        String descripcion="fideos marca italiana";
+        Integer stock=16;
+        Integer estado =0;
+        String fecha="2024-01-02";
+        String id="3";
+        
+        assertNotEquals("", marca);
+        assertNotEquals("", indexCategoria);
+        assertNotEquals("", descripcion);
+        assertNotEquals("", stock);
+        assertNotEquals("", estado);
+        assertNotEquals("", fecha);
+        assertNotEquals("", id);
+        assertTrue(stock>=0);
+        assertTrue(descripcion.length()>10);
+                
+        int res=instance.actualizardatos(marca,indexCategoria,descripcion,stock,estado,fecha,id);
+        assertEquals("Producto actualizado exitosamente", 1, res);
+        
     }
 
     /**
@@ -88,11 +121,13 @@ public class CRUDTest {
     @Test
    // @Rollback(false)
     public void testEliminar() {
-        //System.out.println("eliminar");
+        System.out.println("eliminar");
         CRUD instance = new CRUD();
-        String valor="";
-        instance.filtrardatos(valor);
-      
+        String ide = "4";
+        assertNotEquals("", ide);
+        int res = instance.eliminar(ide);
+        assertEquals("Producto eliminado exitosamente", 1, res);
+        
     }
 
     /**
@@ -101,11 +136,15 @@ public class CRUDTest {
     @Test
     public void testFiltrardatos() {
         System.out.println("filtrardatos");
-        String valor = "2";
+        
         CRUD instance = new CRUD();
-        instance.filtrardatos(valor);
-        Assert.assertNull(instance);
-      
+        String valor = "fideo";
+        assertNotEquals("", valor);
+        
+        int res = instance.filtrardatos(valor);
+        
+        assertEquals("Producto encontrado exitosamente", 1, res);
+        assertFalse(res!=1);
     }
 
     /**
@@ -116,7 +155,7 @@ public class CRUDTest {
         System.out.println("main");
         String[] args = null;
         CRUD.main(args);
-      
+        
     }
 
   

@@ -25,18 +25,14 @@ public class login extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void validarUsuario(){
-        String usuario = txtUser.getText();
-        String paswrd = txtPAss.getText();
-        
-        if (usuario.isEmpty() || paswrd.isEmpty()){
+    public Integer validarUsuario(String user, String Pass){
+        int res=0;
+        if (user.isEmpty() || Pass.isEmpty()){
             
             JOptionPane.showMessageDialog(null, "algun dato vacio");
         }
         else{
-            int res=0;
-
-            String SQL= "select * from cuentas where usuario = '"+usuario+"' and contrasenia = '"+paswrd+"'  ";
+            String SQL= "select * from cuentas where usuario = '"+user+"' and contrasenia = '"+Pass+"'  ";
             //String SQL= "insert into cuentas (usuario,contrasenia) values (?,?)";
 
             try{
@@ -52,18 +48,17 @@ public class login extends javax.swing.JFrame {
                         CRUD form = new CRUD();
                         form.setVisible(true);
                         this.dispose();
+                        
                     }
                 }
                 else{
                         JOptionPane.showMessageDialog(null, "error de acceso");
                     }
-
             }catch(Exception e){
                 JOptionPane.showMessageDialog(null, e.getMessage());
-
             }
         }
-        
+        return res;
     }
        
     @SuppressWarnings("unchecked")
@@ -141,7 +136,13 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        validarUsuario();
+        
+        
+        String usuario = txtUser.getText();
+        String paswrd = txtPAss.getText();
+        validarUsuario(usuario,paswrd);
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author _ADMINISTRADOR_
@@ -19,176 +18,179 @@ import javax.swing.table.DefaultTableModel;
 public class CRUD extends javax.swing.JFrame {
 
     Coneccion cone = new Coneccion();
-    Connection con= cone.conectar();
-    
+    Connection con = cone.conectar();
+
     public CRUD() {
         initComponents();
         this.setLocationRelativeTo(null);
         listar();
-       
+
     }
-    
-    public void setear(){
-        jtxtbusqueda.setText("");
-        jtxtdescripcion.setText("");
-        jtxtmarca.setText("");
-        jtxtstock.setText("");
-        jtxtvencimiento.setText("");
-        
-    }
-    
-    public void guardardatos(){
+
+    public Boolean setear() {
+
         try {
-            String SQL="insert into productos(marca,categoria,descripcion,stock,estado,fecha_v)values(?,?,?,?,?,?)";
-            PreparedStatement pst = con.prepareStatement(SQL);
-            //pst.setInt(1, jtxtid.getText());
-            pst.setString(1, jtxtmarca.getText());
-            
-            int seleccionado=jcbxcategoria.getSelectedIndex();
-            System.out.println(seleccionado);
-            pst.setString(2, jcbxcategoria.getItemAt(seleccionado));
-            
-            pst.setString(3, jtxtdescripcion.getText());
-            
-            pst.setInt(4, Integer.parseInt(jtxtstock.getText()));
-            
-            int seleccionado1=jcbxestado.getSelectedIndex();
-            System.out.println(seleccionado1);
-            pst.setInt(5, seleccionado1);
-            
-            pst.setString(6, jtxtvencimiento.getText());
-            
-            pst.execute();
-            
-            JOptionPane.showMessageDialog(null, "exitaso");
-            
-            setear();
-            
-            
+            jtxtbusqueda.setText("");
+            jtxtdescripcion.setText("");
+            jtxtmarca.setText("");
+            jtxtstock.setText("");
+            jtxtvencimiento.setText("");
+            return true;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "no registró"+e.getMessage());
+            System.out.println("Error en limpiar campos");
+            return false;
         }
-        
     }
-    
-    public void listar(){
-        String[] titulos={"Id","Marca","Categoria","Descripción","Stock","F. Vencimiento"};
-        String[] registros= new String[7];
-        
-        DefaultTableModel modelo = new DefaultTableModel(null,titulos);
-        
+
+    public Integer guardardatos(String marca, Integer indexCate, String desc, Integer stock, Integer estado, String fecha_v) {
+
+        try {
+            String SQL = "insert into productos(marca,categoria,descripcion,stock,estado,fecha_v)values(?,?,?,?,?,?)";
+            PreparedStatement pst = con.prepareStatement(SQL);
+
+            pst.setString(1, marca);
+
+            pst.setString(2, jcbxcategoria.getItemAt(indexCate));
+
+            pst.setString(3, desc);
+
+            pst.setInt(4, stock);
+
+            pst.setInt(5, estado);
+
+            pst.setString(6, fecha_v);
+
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, "exitaso");
+
+            setear();
+            return 1;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No registró :" + e.getMessage());
+            return 0;
+        }
+    }
+
+    public Integer listar() {
+        String[] titulos = {"Id", "Marca", "Categoria", "Descripción", "Stock", "F. Vencimiento"};
+        String[] registros = new String[7];
+
+        DefaultTableModel modelo = new DefaultTableModel(null, titulos);
+
         String SQL = "select * from productos where estado=1";
-        
+
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(SQL);
-            
-            while(rs.next()){
-                registros[0]=rs.getString("id");
-                registros[1]=rs.getString("marca");
-                registros[2]=rs.getString("categoria");
-                registros[3]=rs.getString("descripcion");
-                registros[4]=rs.getString("stock");
-                registros[5]=rs.getString("fecha_v");
-                
+
+            while (rs.next()) {
+                registros[0] = rs.getString("id");
+                registros[1] = rs.getString("marca");
+                registros[2] = rs.getString("categoria");
+                registros[3] = rs.getString("descripcion");
+                registros[4] = rs.getString("stock");
+                registros[5] = rs.getString("fecha_v");
+
                 modelo.addRow(registros);
             }
-            
+
             jtableproductos.setModel(modelo);
+            return 1;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
+            return 0;
         }
     }
-    
-    public void actualizardatos(){
+
+    public Integer actualizardatos(String marca, Integer indexCate, String desc, Integer stock, Integer estado, String fecha_v, String id) {
+
         try {
-            String SQL="update productos set marca=?,categoria=?,descripcion=?,stock=?,estado=?,fecha_v=? where id=?";
-            
-            int filaSeleccionada=jtableproductos.getSelectedRow();
-            String dao=(String)jtableproductos.getValueAt(filaSeleccionada, 0);
-            
+
+            String SQL = "update productos set marca=?,categoria=?,descripcion=?,stock=?,estado=?,fecha_v=? where id=?";
+
             PreparedStatement pst = con.prepareStatement(SQL);
             //pst.setInt(1, jtxtid.getText());
-            pst.setString(1, jtxtmarca.getText());
-            
-            int seleccionado=jcbxcategoria.getSelectedIndex();
-            System.out.println(seleccionado);
-            pst.setString(2, jcbxcategoria.getItemAt(seleccionado));
-            
-            pst.setString(3, jtxtdescripcion.getText());
-            
-            pst.setInt(4, Integer.parseInt(jtxtstock.getText()));
-            
-            int seleccionado1=jcbxestado.getSelectedIndex();
-            System.out.println(seleccionado1);
-            pst.setInt(5, seleccionado1);
-            
-            pst.setString(6, jtxtvencimiento.getText());
-            
-            pst.setString(7, dao);
+
+            pst.setString(1, marca);
+
+            pst.setString(2, jcbxcategoria.getItemAt(indexCate));
+
+            pst.setString(3, desc);
+
+            pst.setInt(4, stock);
+
+            pst.setInt(5, estado);
+
+            pst.setString(6, fecha_v);
+
+            pst.setString(7, id);
+
             pst.execute();
-            
+
             JOptionPane.showMessageDialog(null, "registro editado");
-            
+
             setear();
-            
-            
+            return 1;
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "no editado "+e.getMessage());
+            JOptionPane.showMessageDialog(null, "no editado " + e.getMessage());
+            return 0;
         }
-        
+
     }
-    
-    public void eliminar(){
-        int filaSeleccionada = jtableproductos.getSelectedRow();
-        
+
+    public Integer eliminar(String id) {
+
         try {
-            String SQL = "update productos set estado=0 where id="+jtableproductos.getValueAt(filaSeleccionada, 0);
-            
-            Statement st=con.createStatement();
-            
-            int n=st.executeUpdate(SQL);
-            if(n>=0){
+            String SQL = "update productos set estado=0 where id=" + id;
+
+            Statement st = con.createStatement();
+
+            int n = st.executeUpdate(SQL);
+            if (n >= 0) {
                 JOptionPane.showMessageDialog(null, "registro eliminado");
                 listar();
             }
+            return 1;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "error al eliminar "+e.getMessage());
+            JOptionPane.showMessageDialog(null, "error al eliminar " + e.getMessage());
+            return 0;
         }
     }
-    
-    public void filtrardatos(String valor){
-        String[] titulos={"Id","Marca","Categoria","Descripción","Stock","F. Vencimiento"};
-        String[] registros= new String[7];
-        
-        DefaultTableModel modelo = new DefaultTableModel(null,titulos);
-        
-        String SQL = "select * from productos where estado=1 and id like '%"+valor+"%'";
-        
+
+    public Integer filtrardatos(String valor) {
+        String[] titulos = {"Id", "Marca", "Categoria", "Descripción", "Stock", "F. Vencimiento"};
+        String[] registros = new String[7];
+
+        DefaultTableModel modelo = new DefaultTableModel(null, titulos);
+
+        String SQL = "select * from productos where estado=1 and id like '%" + valor + "%'";
+
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(SQL);
-            
-            while(rs.next()){
-                registros[0]=rs.getString("id");
-                registros[1]=rs.getString("marca");
-                registros[2]=rs.getString("categoria");
-                registros[3]=rs.getString("descripcion");
-                registros[4]=rs.getString("stock");
-                registros[5]=rs.getString("fecha_v");
-                
+
+            while (rs.next()) {
+                registros[0] = rs.getString("id");
+                registros[1] = rs.getString("marca");
+                registros[2] = rs.getString("categoria");
+                registros[3] = rs.getString("descripcion");
+                registros[4] = rs.getString("stock");
+                registros[5] = rs.getString("fecha_v");
+
                 modelo.addRow(registros);
             }
-            
+
             jtableproductos.setModel(modelo);
+            return 1;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
+            return 0;
         }
     }
-    
-    
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -400,14 +402,15 @@ public class CRUD extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        guardardatos();
+
+        guardardatos(jtxtmarca.getText(), jcbxcategoria.getSelectedIndex(), jtxtdescripcion.getText(), Integer.parseInt(jtxtstock.getText()), jcbxestado.getSelectedIndex(), jtxtvencimiento.getText());
         listar();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jtableproductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtableproductosMouseClicked
         // TODO add your handling code here:
-        int filaSeleccionada=jtableproductos.rowAtPoint(evt.getPoint());
-        
+        int filaSeleccionada = jtableproductos.rowAtPoint(evt.getPoint());
+
         jtxtmarca.setText(jtableproductos.getValueAt(filaSeleccionada, 1).toString());
         jcbxcategoria.setSelectedItem(jtableproductos.getValueAt(filaSeleccionada, 2));
         jtxtdescripcion.setText(jtableproductos.getValueAt(filaSeleccionada, 3).toString());
@@ -417,14 +420,18 @@ public class CRUD extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        actualizardatos();
+
+        int filaSeleccionada = jtableproductos.getSelectedRow();
+        String dao = (String) jtableproductos.getValueAt(filaSeleccionada, 0);
+
+        actualizardatos(jtxtmarca.getText(), jcbxcategoria.getSelectedIndex(), jtxtdescripcion.getText(), Integer.parseInt(jtxtstock.getText()), jcbxestado.getSelectedIndex(), jtxtvencimiento.getText(), dao);
         setear();
         listar();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        eliminar();
+        eliminar((String) jtableproductos.getValueAt(jtableproductos.getSelectedRow(), 0));
         listar();
         setear();
     }//GEN-LAST:event_jButton3ActionPerformed
